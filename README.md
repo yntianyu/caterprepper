@@ -111,10 +111,10 @@ Touching the sensor during any active/wait state skips directly to `DONE_GREEN`.
 
 **CS 320 — Team 5**
 
-- **Shannon Li** — Hardware integration, circuit design
-- **Eva Theetge** — Physical prototyping, form factor design
-- **Yixi Gao** — Firmware development, state machine logic
-- **Elizabeth Yan** — User research, interaction design
+- **Shannon Li** 
+- **Eva Theetge** 
+- **Yixi Gao** 
+- **Elizabeth Yan**
 
 ### External Resources
 
