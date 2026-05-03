@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaterPrepper — Team 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #eaf0ec;
+    --text: #1e2d2b;
+    --text-soft: #3d5753;
+    --accent: #2d8a6e;
+    --teal-pale: #c5ddd5;
+    --teal-deep: #1a4a3e;
+    --card: #ffffff;
+    --card-shadow: rgba(30, 60, 50, 0.08);
+    --code-bg: #1b2a27;
+    --code-text: #a8e6cf;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  .topnav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.8rem 2rem;
+    background: rgba(234,240,236,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--teal-pale);
+  }
+  .topnav .logo {
+    font-family: 'Fraunces', serif; font-weight: 800; font-size: 1.1rem;
+    color: var(--teal-deep); text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .topnav .logo img { width: 28px; height: auto; }
+  .topnav nav { display: flex; gap: 1.5rem; }
+  .topnav nav a {
+    text-decoration: none; font-size: 0.82rem; font-weight: 600;
+    color: var(--text-soft); transition: color 0.2s;
+  }
+  .topnav nav a:hover { color: var(--accent); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; position: relative;
+    padding: 6rem 2rem 4rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(42,138,110,0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(224,122,58,0.07) 0%, transparent 60%),
+      var(--bg);
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%232d8a6e' opacity='0.07'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .hero-img {
+    width: 200px; height: auto;
+    filter: drop-shadow(0 8px 24px rgba(30,80,60,0.18));
+    margin-bottom: 2rem;
+    animation: bob 4s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(-2deg); }
+    75% { transform: translateY(6px) rotate(2deg); }
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif; font-weight: 800;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    letter-spacing: -0.03em; color: var(--teal-deep); line-height: 1.05;
+    margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero .subtitle {
+    font-size: 1.15rem; color: var(--text-soft);
+    max-width: 540px; margin: 0 auto 1.5rem;
+  }
+  .hero .badge {
+    font-size: 0.8rem; color: var(--accent); font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2.5rem;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .hero-btns a {
+    display: inline-block; padding: 0.7rem 1.6rem; border-radius: 100px;
+    text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.25s;
+  }
+  .btn-primary { background: var(--teal-deep); color: #fff; }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-outline { background: transparent; color: var(--teal-deep); border: 2px solid var(--teal-pale); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ─── SECTIONS ─── */
+  .wrap { max-width: 960px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
+  }
+  h2 {
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 2.1rem;
+    color: var(--teal-deep); margin-bottom: 1.2rem; letter-spacing: -0.02em;
+  }
+  .prose { color: var(--text-soft); max-width: 700px; margin-bottom: 1.5rem; }
+  .prose + .prose { margin-top: -0.5rem; }
+
+  .divider { display: flex; justify-content: center; padding: 1.5rem 0; }
+  .divider img { width: 56px; height: auto; opacity: 0.2; }
+  .divider.flip img { transform: scaleX(-1); }
+
+  /* ─── CARDS ─── */
+  .card-grid { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+  .card {
+    background: var(--card); border-radius: 14px; padding: 1.6rem;
+    box-shadow: 0 2px 18px var(--card-shadow);
+    border: 1px solid rgba(45,138,110,0.06);
+    transition: transform 0.2s;
+  }
+  .card:hover { transform: translateY(-3px); }
+  .card h3 {
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.1rem;
+    color: var(--teal-deep); margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .card p, .card li { color: var(--text-soft); font-size: 0.92rem; line-height: 1.7; }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li::before { content: '→ '; color: var(--accent); font-weight: 600; }
+  .card ul li + li { margin-top: 0.35rem; }
+
+  /* ─── TEAM ─── */
+  .team-card { text-align: center; padding: 1.8rem 1.2rem; }
+  .team-avatar {
+    width: 60px; height: 60px; border-radius: 50%;
+    margin: 0 auto 0.7rem; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: 700; color: #fff;
+  }
+  .team-card h4 {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 1rem; color: var(--teal-deep); margin-bottom: 0.3rem;
+  }
+  .bio { font-size: 0.82rem; color: var(--text-soft); }
+
+  /* ─── GALLERY ─── */
+  .gallery {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem; margin-top: 1.5rem;
+  }
+  .gallery-slot {
+    background: var(--card); border-radius: 5px; overflow: hidden;
+    box-shadow: 0 2px 14px var(--card-shadow);
+    aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center;
+    color: var(--text-soft); font-size: 0.82rem; text-align: center; padding: 1rem;
+    border: 2px solid var(--teal-pale); position: relative;
+  }
+  .gallery-slot img {
+    width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;
+  }
+  .gallery-caption {
+    font-size: 0.8rem; color: var(--text-soft); margin-top: 0.5rem; text-align: center;
+    font-style: italic;
+  }
+
+  /* ─── VIDEO ─── */
+  .video-wrap {
+    margin-top: 1.5rem; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 4px 24px var(--card-shadow);
+    background: #000; aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 0.9rem; text-align: center; padding: 2rem;
+    border: 2px dashed rgba(255,255,255,0.15);
+  }
+  .video-wrap iframe { width: 100%; height: 100%; border: none; position: absolute; inset: 0; }
+  .video-wrap.has-video { position: relative; padding: 0; border: none; }
+
+  /* ─── HARDWARE ─── */
+  .hw-icon { font-size: 1.8rem; margin-bottom: 0.4rem; text-align: center; }
+  .hw-card { text-align: center; }
+  .hw-card h4 { font-size: 0.86rem; font-weight: 600; color: var(--teal-deep); }
+  .hw-card p { font-size: 0.76rem; color: var(--text-soft); margin-top: 0.15rem; }
+
+  /* ─── TABLE ─── */
+  .table-wrap { overflow-x: auto; margin-top: 1.5rem; }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  .table-wrap th {
+    background: var(--teal-deep); color: #fff; padding: 0.7rem 1rem;
+    text-align: left; font-weight: 600; font-size: 0.78rem;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .table-wrap td { padding: 0.6rem 1rem; border-bottom: 1px solid rgba(45,138,110,0.1); color: var(--text-soft); }
+  .table-wrap tr:nth-child(even) td { background: rgba(45,138,110,0.03); }
+  .state-badge {
+    display: inline-block; padding: 0.12rem 0.55rem; border-radius: 100px;
+    font-size: 0.73rem; font-weight: 600; background: var(--teal-pale); color: var(--teal-deep);
+  }
+
+  /* ─── CODE ─── */
+  .code-block {
+    background: var(--code-bg); border-radius: 14px; padding: 1.8rem;
+    margin-top: 1.5rem; overflow-x: auto;
+    box-shadow: 0 4px 28px rgba(0,0,0,0.2);
+  }
+  .code-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+  .cdot { width: 11px; height: 11px; border-radius: 50%; }
+  .cdot.r { background: #ff5f56; } .cdot.y { background: #ffbd2e; } .cdot.g { background: #27c93f; }
+  .code-name { color: #6a8f80; font-size: 0.78rem; margin-left: 0.4rem; }
+  .code-block pre {
+    font-family: 'Courier New', monospace; font-size: 0.8rem;
+    line-height: 1.7; color: var(--code-text); white-space: pre; tab-size: 2;
+  }
+  .cm { color: #6a8f80; } .kw { color: #f7a76c; } .tp { color: #7ec8c8; }
+  .fn { color: #e6d06c; } .nu { color: #cf9fff; }
+
+  /* ─── LIBS ─── */
+  .lib-card h4 { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--teal-deep); margin-bottom: 0.25rem; }
+  .lib-card code { font-size: 0.76rem; background: var(--teal-pale); color: var(--teal-deep); padding: 0.1rem 0.4rem; border-radius: 4px; }
+  .lib-card p { color: var(--text-soft); font-size: 0.86rem; margin-top: 0.35rem; }
+
+  /* ─── STEPS ─── */
+  .steps { margin-top: 1.5rem; counter-reset: step; }
+  .step { display: flex; gap: 1.2rem; align-items: flex-start; margin-bottom: 1.4rem; }
+  .step::before {
+    counter-increment: step; content: counter(step);
+    flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.82rem;
+  }
+  .step-body h4 { font-weight: 600; color: var(--teal-deep); margin-bottom: 0.2rem; }
+  .step-body p { color: var(--text-soft); font-size: 0.9rem; }
+  .step-body code { background: var(--teal-pale); color: var(--teal-deep); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.8rem; }
+  .step-body a { color: var(--accent); }
+
+  /* ─── FUTURE ─── */
+  .future-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: var(--card); padding: 1.4rem; border-radius: 14px;
+    box-shadow: 0 2px 16px var(--card-shadow);
+  }
+  .future-icon {
+    font-size: 1.4rem; flex-shrink: 0;
+    width: 42px; height: 42px; display: flex;
+    align-items: center; justify-content: center;
+    border-radius: 10px; background: rgba(45,138,110,0.1);
+  }
+  .future-item h4 { font-weight: 600; color: var(--teal-deep); margin-bottom: 0.2rem; }
+  .future-item p { color: var(--text-soft); font-size: 0.88rem; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center; padding: 3rem 2rem;
+    color: var(--text-soft); font-size: 0.84rem;
+    border-top: 1px solid var(--teal-pale);
+  }
+  footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 700px) {
+    .cols-2, .cols-3 { grid-template-columns: 1fr; }
+    .cols-4 { grid-template-columns: 1fr 1fr; }
+    .topnav nav { gap: 0.8rem; }
+    .topnav nav a { font-size: 0.72rem; }
+    .gallery { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════ NAV ══════ -->
+<div class="topnav">
+  <a class="logo" href="#"><img src="photos/caterpillar.jpeg" alt=""> CaterPrepper</a>
+  <nav>
+    <a href="#team">Team</a>
+    <a href="#problem">Problem</a>
+    <a href="#concept">Concept</a>
+    <a href="#process">Process</a>
+    <a href="#demo">Demo</a>
+    <a href="#code">Code</a>
+    <a href="https://github.com/caterprepper" target="_blank">GitHub&nbsp;↗</a>
+  </nav>
+</div>
+
+<!-- ══════ HERO ══════ -->
+<header class="hero">
+  <img class="hero-img" src="photos/caterpillar.jpeg" alt="CaterPrepper mascot">
+  <h1>Cater<span>Prepper</span></h1>
+  <p class="subtitle">A smart modular coat rack shaped like a caterpillar that physically reacts to live weather and your personal schedule, helping you prepare for the day.</p>
+  <p class="badge">CS 320 · Team 5</p>
+  <div class="hero-btns">
+    <a href="#problem" class="btn-primary">Learn More</a>
+    <a href="#demo" class="btn-outline">Watch Demo</a>
+    <a href="https://github.com/caterprepper" class="btn-outline" target="_blank">GitHub Repo ↗</a>
+  </div>
+</header>
+
+<!-- ══════ TEAM (rubric: Team Member Names and short bio) ══════ -->
+<section class="wrap" id="team">
+  <p class="section-label">The Team</p>
+  <h2>Meet Team 5</h2>
+  <div class="card-grid cols-4">
+    <div class="card team-card">
+      <div class="team-avatar" style="background:#d4a843;">YG</div>
+      <h4>Yixi Gao</h4>
+    </div>
+    <div class="card team-card">
+      <div class="team-avatar" style="background:#3aaf8b;">SL</div>
+      <h4>Shannon Li</h4>
+    </div>
+    <div class="card team-card">
+      <div class="team-avatar" style="background:#e07a3a;">ET</div>
+      <h4>Eva Theetge</h4>
+    </div>
+    <div class="card team-card">
+      <div class="team-avatar" style="background:#8b6bbf;">EY</div>
+      <h4>Elizabeth Yan</h4>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><img src="photos/caterpillar.jpeg" alt=""></div>
+
+<!-- ══════ PROBLEM STATEMENT (rubric: Problem Statement) ══════ -->
+<section class="wrap" id="problem">
+  <p class="section-label">Problem Statement</p>
+  <h2>Why CaterPrepper?</h2>
+  <p class="prose">Rushing out the door in the morning, many of us forget essential items: a coat when it's cold, an umbrella when it's raining, keys we'll need later. Phone-based reminders don't solve this well: notifications are easy to swipe away, and "alert fatigue" means we stop paying attention to them altogether.</p>
+  <p class="prose">Daily preparation ends up feeling like an invisible mental checklist. There's no physical, ambient feedback loop that ties the act of leaving the house to the items you actually need.</p>
+  <p class="prose">CaterPrepper addresses this gap by turning the coat rack itself into the reminder systems. Using tangible cues (light, vibration, sound) instead of screen-based notifications, embedded in an emotionally engaging caterpillar form that makes the routine feel like caring for a companion rather than checking a list.</p>
+
+  <div class="card-grid cols-2" style="margin-top:1.5rem;">
+    <div class="card">
+      <h3>🎯 The Challenge</h3>
+      <ul>
+        <li>Forgetting coats, umbrellas, or keys when rushing out</li>
+        <li>Alert fatigue from easy-to-ignore phone notifications</li>
+        <li>Daily preparation as a cognitive burden</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>👤 Target Users</h3>
+      <ul>
+        <li>People who are often in a rush in the mornings</li>
+        <li>Those who tend to forget essentials when leaving</li>
+        <li>Anyone wanting a more ambient, screen-free routine</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider flip"><img src="photos/caterpillar.jpeg" alt=""></div>
+
+<!-- ══════ CONCEPTUAL DESIGN (rubric: Conceptual Design + sketches/diagrams) ══════ -->
+<section class="wrap" id="concept">
+  <p class="section-label">Conceptual Design</p>
+  <h2>How CaterPrepper Works</h2>
+  <p class="prose">CaterPrepper is a wall-mounted or tabletop caterpillar with modular body segments, each equipped with a hook and a reed switch. Users hang items on the hooks using small magnets. When you're ready to leave, you tap the caterpillar's touch sensor, and it walks you through collecting your things.</p>
+
+  <div class="card-grid cols-2" style="margin-top:1rem;">
+    <div class="card">
+      <h3>Interaction Flow</h3>
+      <ul>
+        <li>Hang items (coat, umbrella, keys, bag) on hooks → magnets trigger reed switches</li>
+        <li>Tap the touch sensor to start the departure sequence</li>
+        <li>CaterPrepper blinks green, plays a welcome sound, waits 3 seconds</li>
+        <li>Checks each hook → red light + vibration + voice prompt for items still hanging</li>
+        <li>Remove each item as prompted; the caterpillar advances through segments</li>
+        <li>All items collected → green light + happy chime → you're ready!</li>
+        <li>Tap again to reset</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What Makes It Novel</h3>
+      <ul>
+        <li>Emotionally engaging creature-like interface, not a generic gadget</li>
+        <li>Physical cues (light, vibration, sound) instead of screen notifications</li>
+        <li>Reframes reminders as a care relationship</li>
+        <li>Tangible, modular design → segments can be added or reconfigured</li>
+        <li>Works without a phone or app; fully standalone</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-label" style="margin-top:2.5rem;">Sketches &amp; Diagrams</p>
+  <p class="prose">Early concept sketches showing the caterpillar form factor, feedback states, and attachment interaction model.</p>
+  <div class="gallery">
+    <div class="gallery-slot">
+      <img src="photos/sketch-concept.png" alt="Concept sketch">
+    </div>
+    <div class="gallery-slot">
+      <img src="photos/sketch-states.png" alt="Feedback states">
+    </div>
+    <div class="gallery-slot">
+      <img src="photos/storyboard.png" alt="Storyboard">
+    </div>
+  </div>
+</section>
+
+<div class="divider"><img src="photos/caterpillar.jpeg" alt=""></div>
+
+<!-- ══════ DESIGN PROCESS (rubric: Design Process and Artifacts) ══════ -->
+<section class="wrap" id="process">
+  <p class="section-label">Design Process &amp; Artifacts</p>
+  <h2>From Sketch to Prototype</h2>
+  <p class="prose">Our design evolved through several stages: initial brainstorming and concept sketches, low-fidelity physical mockups, circuit prototyping on a breadboard, laser-cut wooden segments, and final assembly with embedded electronics.</p>
+
+  <div class="gallery">
+    <div class="gallery-slot">
+      <img src="photos/nailing.jpg" alt="Nailing for hooks">
+    </div>
+    <div class="gallery-slot">
+      <img src="photos/pompoms.jpg" alt="Making pompoms">
+    </div>
+    <div class="gallery-slot">
+       <img src="photos/3d-print.jpg" alt="3D printing">
+    </div>
+    <div class="gallery-slot">
+      <img src="photos/process-breadboard.JPG" alt="Breadboard">
+    </div>
+    <div class="gallery-slot">
+      <img src="photos/process-lasercut.jpg" alt="Laser cut parts">
+    </div>
+    <div class="gallery-slot">
+      <img src="photos/building.JPEG" alt="Building process">
+    </div>
+  </div>
+</section>
+
+<div class="divider flip"><img src="photos/caterpillar.jpeg" alt=""></div>
+
+<!-- ══════ VIDEO DEMO (rubric: Functional Prototype Demonstration) ══════ -->
+<section class="wrap" id="demo">
+  <p class="section-label">Prototype Demonstration</p>
+  <h2>See It in Action</h2>
+  <p class="prose">A 1–3 minute video demonstrating the working prototype: how items are hung, the touch-to-start interaction, sequential reed switch checking with audio/haptic/visual feedback, and the "all clear" state.</p>
+
+  <div class="video-wrap has-video">
+    <iframe src="https://drive.google.com/file/d/1L5zsrExo0QRyGyJAxNx2zifu3AnlZdtK/preview" allowfullscreen></iframe>
+    🎬 Embed your 1–3 min demo video here<br><br>
+    <small>Replace this with a YouTube or Google Drive iframe.<br>
+    Add class <code style="background:rgba(255,255,255,0.15);padding:0.1rem 0.3rem;border-radius:3px;">has-video</code> to the wrapper div.</small>
+  </div>
+</section>
+
+<div class="divider"><img src="photos/caterpillar.jpeg" alt=""></div>
+
+<!-- ══════ HARDWARE ══════ -->
+<section class="wrap">
+  <p class="section-label">Components</p>
+  <h2>Hardware Overview</h2>
+  <div class="card-grid cols-3">
+    <div class="card hw-card"><div class="hw-icon">🔌</div><h4>Arduino UNO</h4><p>Main microcontroller</p></div>
+    <div class="card hw-card"><div class="hw-icon">🧲</div><h4>4× Reed Switches</h4><p>Detect items via magnets (A0–A3)</p></div>
+    <div class="card hw-card"><div class="hw-icon">👆</div><h4>Touch Sensor</h4><p>Capacitive touch on pin 2</p></div>
+    <div class="card hw-card"><div class="hw-icon">📳</div><h4>Vibration Motor</h4><p>Haptic feedback on pin 9</p></div>
+    <div class="card hw-card"><div class="hw-icon">💡</div><h4>Red &amp; Green LEDs</h4><p>Status indicators (pins 5 &amp; 6)</p></div>
+    <div class="card hw-card"><div class="hw-icon">🔊</div><h4>DFPlayer Mini</h4><p>MP3 playback (pins 10 &amp; 11)</p></div>
+  </div>
+</section>
+
+<!-- ══════ STATE MACHINE ══════ -->
+<section class="wrap">
+  <p class="section-label">Technical Details</p>
+  <h2>State Machine</h2>
+  <p class="prose">The system is driven by a finite state machine. After a touch press, it checks each reed switch in sequence, playing the corresponding audio prompt and activating the motor until the user removes the item.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>State</th><th>Behavior</th><th>Transition</th></tr></thead>
+      <tbody>
+        <tr><td><span class="state-badge">IDLE</span></td><td>All outputs off; waiting for touch</td><td>Touch → START_DELAY or DONE_GREEN</td></tr>
+        <tr><td><span class="state-badge">START_DELAY</span></td><td>Green blink + welcome sound; 3s countdown</td><td>After 3s → check reeds</td></tr>
+        <tr><td><span class="state-badge">ACTIVE_REED2</span></td><td>Red LED, motor on, playing track 2</td><td>Magnet removed → WAIT_REED3</td></tr>
+        <tr><td><span class="state-badge">WAIT_REED3</span></td><td>Checking reed 3</td><td>Clear → DONE_GREEN; detected → ACTIVE_REED3</td></tr>
+        <tr><td><span class="state-badge">ACTIVE_REED3</span></td><td>Playing track 3</td><td>Removed → WAIT_REED4</td></tr>
+        <tr><td><span class="state-badge">ACTIVE_REED4</span></td><td>Playing track 4</td><td>Removed → WAIT_REED1</td></tr>
+        <tr><td><span class="state-badge">ACTIVE_REED1</span></td><td>Playing track 5</td><td>Removed &amp; clear → DONE_GREEN</td></tr>
+        <tr><td><span class="state-badge" style="background:#c5e8d5;">DONE_GREEN</span></td><td>Green LED, success chime</td><td>Touch → IDLE</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════ LIBRARIES ══════ -->
+<section class="wrap">
+  <p class="section-label">Dependencies</p>
+  <h2>Libraries Used</h2>
+  <div class="card-grid cols-2">
+    <div class="card lib-card">
+      <h4>SoftwareSerial</h4>
+      <code>#include &lt;SoftwareSerial.h&gt;</code>
+      <p>Creates a serial connection on pins 10/11 to communicate with the DFPlayer Mini, keeping hardware serial free for debugging.</p>
+    </div>
+    <div class="card lib-card">
+      <h4>DFRobotDFPlayerMini</h4>
+      <code>#include &lt;DFRobotDFPlayerMini.h&gt;</code>
+      <p>High-level interface to the DFPlayer Mini — volume control, track playback from SD card, and playback event detection.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CODE (rubric: Link to GitHub Repository) ══════ -->
+<section class="wrap" id="code">
+  <p class="section-label">Source Code</p>
+  <h2>Code Snippet</h2>
+  <p class="prose">Core logic showing the IDLE and START_DELAY states. Full source with inline comments is in the <a href="https://github.com/caterprepper" target="_blank" style="color:var(--accent);">GitHub repository</a>.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="cdot r"></span><span class="cdot y"></span><span class="cdot g"></span>
+      <span class="code-name">caterprepper.ino</span>
+    </div>
+    <pre><span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">switch</span> (currentState) {
+
+    <span class="kw">case</span> <span class="tp">IDLE</span>:
+      <span class="fn">digitalWrite</span>(motorPin, <span class="tp">LOW</span>);   <span class="cm">// motor off</span>
+      <span class="fn">digitalWrite</span>(redLED, <span class="tp">LOW</span>);     <span class="cm">// red off</span>
+      <span class="fn">digitalWrite</span>(greenLED, <span class="tp">LOW</span>);   <span class="cm">// green off</span>
+
+      <span class="kw">if</span> (<span class="fn">newTouchPress</span>()) {
+        <span class="kw">if</span> (<span class="fn">anyItemPresent</span>()) {
+          <span class="fn">playTrack</span>(<span class="nu">1</span>);               <span class="cm">// welcome sound</span>
+          startTime = <span class="fn">millis</span>();
+          currentState = <span class="tp">START_DELAY</span>;
+        } <span class="kw">else</span> {
+          <span class="fn">goGreen</span>();                 <span class="cm">// nothing to grab!</span>
+        }
+      }
+      <span class="kw">break</span>;
+
+    <span class="kw">case</span> <span class="tp">START_DELAY</span>: {
+      <span class="kw">unsigned long</span> elapsed = <span class="fn">millis</span>() - startTime;
+
+      <span class="cm">// blink green during 3-second countdown</span>
+      <span class="kw">if</span> ((elapsed > <span class="nu">100</span> && elapsed < <span class="nu">300</span>) ||
+          (elapsed > <span class="nu">500</span> && elapsed < <span class="nu">700</span>)) {
+        <span class="fn">digitalWrite</span>(greenLED, <span class="tp">HIGH</span>);
+      } <span class="kw">else</span> {
+        <span class="fn">digitalWrite</span>(greenLED, <span class="tp">LOW</span>);
+      }
+
+      <span class="kw">if</span> (elapsed > <span class="nu">3000</span>) {           <span class="cm">// begin checking reeds</span>
+        <span class="kw">if</span> (<span class="fn">anyItemPresent</span>()) {
+          <span class="fn">digitalWrite</span>(redLED, <span class="tp">HIGH</span>);
+          <span class="fn">digitalWrite</span>(motorPin, <span class="tp">HIGH</span>);
+          <span class="cm">// → first active reed state</span>
+        } <span class="kw">else</span> {
+          <span class="fn">goGreen</span>();
+        }
+      }
+      <span class="kw">break</span>;
+    }
+    <span class="cm">// … remaining states follow same pattern</span>
+  }
+}</pre>
+  </div>
+</section>
+
+<div class="divider flip"><img src="photos/caterpillar.jpeg" alt=""></div>
+
+<!-- ══════ SETUP ══════ -->
+<section class="wrap">
+  <p class="section-label">Getting Started</p>
+  <h2>Setup Instructions</h2>
+  <div class="steps">
+    <div class="step"><div class="step-body">
+      <h4>Install the Arduino IDE</h4>
+      <p>Download the <a href="https://www.arduino.cc/en/software">Arduino IDE</a> (v2.x recommended).</p>
+    </div></div>
+    <div class="step"><div class="step-body">
+      <h4>Install Required Libraries</h4>
+      <p>Library Manager → install <code>DFRobotDFPlayerMini</code>. <code>SoftwareSerial</code> is built-in.</p>
+    </div></div>
+    <div class="step"><div class="step-body">
+      <h4>Wire the Hardware</h4>
+      <p>Reed switches → <code>A0</code>–<code>A3</code>, touch → <code>2</code>, motor → <code>9</code>, red LED → <code>5</code>, green LED → <code>6</code>, DFPlayer → <code>10</code>/<code>11</code>.</p>
+    </div></div>
+    <div class="step"><div class="step-body">
+      <h4>Prepare the SD Card</h4>
+      <p>FAT32 format. Create <code>mp3</code> folder with files <code>0001.mp3</code>–<code>0006.mp3</code>.</p>
+    </div></div>
+    <div class="step"><div class="step-body">
+      <h4>Upload &amp; Run</h4>
+      <p>Select Arduino UNO, upload sketch, open Serial Monitor at 9600 baud.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ══════ FUTURE WORK ══════ -->
+<section class="wrap">
+  <p class="section-label">Roadmap</p>
+  <h2>Future Work</h2>
+  <div class="card-grid" style="grid-template-columns:1fr;">
+    <div class="future-item"><div class="future-icon">🧩</div><div><h4>Greater Modular Customization</h4><p>Expand segment types and configurations to fit different user needs and routines.</p></div></div>
+    <div class="future-item"><div class="future-icon">📳</div><div><h4>Refined Haptic Feedback</h4><p>More nuanced, personalized vibration patterns for each segment.</p></div></div>
+    <div class="future-item"><div class="future-icon">💡</div><div><h4>Segment-Level LED System</h4><p>Individual lighting per segment for specific visual cues.</p></div></div>
+    <div class="future-item"><div class="future-icon">📱</div><div><h4>Companion App Interface</h4><p>Customize preferences, sync schedules, and adjust behaviors via mobile app.</p></div></div>
+  </div>
+</section>
+
+<!-- ══════ GITHUB CTA (rubric: Link to GitHub Repository) ══════ -->
+<section class="wrap" style="text-align:center; padding-top:2rem; padding-bottom:3rem;">
+  <p class="section-label">Repository</p>
+  <h2>Source Code &amp; Documentation</h2>
+  <p class="prose" style="margin:0 auto 1.5rem;">All source code with inline comments, plus the full README, are available on GitHub.</p>
+  <a href="https://github.com/caterprepper" target="_blank" class="btn-primary" style="display:inline-block; padding:0.85rem 2.2rem; border-radius:100px; text-decoration:none; font-weight:600; font-size:1rem;">
+    View on GitHub ↗
+  </a>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <p>CaterPrepper · CS 320 · Yixi Gao, Shannon Li, Eva Theetge, Elizabeth Yan</p>
+  <p style="margin-top:0.4rem;"><a href="https://github.com/caterprepper" target="_blank">GitHub Repository ↗</a></p>
+  <p style="margin-top:0.5rem; opacity:0.7;">Built with Arduino UNO, DFPlayer Mini, reed switches, and lots of love <img src="photos/caterpillar.jpeg" alt="" style="width:20px;height:auto;vertical-align:middle;"></p>
+</footer>
+
+</body>
+</html>
