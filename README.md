@@ -120,4 +120,3 @@ Touching the sensor during any active/wait state skips directly to `DONE_GREEN`.
 
 - [DFRobotDFPlayerMini Library](https://github.com/DFRobot/DFRobotDFPlayerMini) — MP3 module control
 - [Arduino SoftwareSerial](https://docs.arduino.cc/learn/built-in-libraries/software-serial/) — Serial communication on digital pins
-- Caterpillar mascot graphic — sourced from pngtree.com
